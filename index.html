@@ -39,6 +39,124 @@
     background-attachment: fixed;
     min-height: 100vh;
   }
+  body.sobre-visible{ overflow:hidden; }
+
+  .portada-sobre{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    display:grid;
+    place-items:center;
+    background:rgba(232,244,242,0.96);
+    transition:opacity 0.7s ease, visibility 0.7s ease;
+  }
+  .portada-sobre.oculta{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .sobre-boton{
+    position:relative;
+    width:min(82vw, 360px);
+    aspect-ratio:1.55;
+    border:0;
+    padding:0;
+    background:transparent;
+    cursor:pointer;
+    perspective:900px;
+  }
+  .sobre-cuerpo{
+    position:absolute;
+    inset:18% 0 0;
+    overflow:hidden;
+    border-radius:4px;
+    background:linear-gradient(145deg, #fbf9f4, #dcefeb);
+    box-shadow:0 20px 42px rgba(46,82,102,0.22);
+  }
+  .sobre-cuerpo::before,
+  .sobre-cuerpo::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+  }
+  .sobre-cuerpo::before{
+    background:linear-gradient(32deg, transparent 49%, rgba(127,184,173,0.48) 50%, transparent 51%), linear-gradient(-32deg, transparent 49%, rgba(127,184,173,0.48) 50%, transparent 51%);
+  }
+  .sobre-cuerpo::after{
+    background:linear-gradient(145deg, transparent 49%, rgba(201,162,75,0.5) 50%, transparent 51%);
+    opacity:0.45;
+  }
+  .sobre-tarjeta{
+    position:absolute;
+    z-index:1;
+    left:12%;
+    right:12%;
+    bottom:9%;
+    height:70%;
+    display:grid;
+    place-items:center;
+    padding:12px;
+    color:var(--azul-profundo);
+    background:var(--blanco-espuma);
+    border:1px solid rgba(201,162,75,0.5);
+    font-family:var(--serif);
+    font-size:clamp(1.25rem, 6vw, 1.8rem);
+    line-height:1.05;
+    transform:translateY(45%);
+    transition:transform 0.9s cubic-bezier(.2,.8,.25,1) 0.2s;
+  }
+  .sobre-solapa{
+    position:absolute;
+    z-index:3;
+    top:18%;
+    left:0;
+    width:100%;
+    height:52%;
+    transform-origin:top center;
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    background:linear-gradient(145deg, #a9cbd6, #7fb8ad);
+    backface-visibility:hidden;
+    transition:transform 0.9s cubic-bezier(.2,.8,.25,1);
+  }
+  .sobre-sello{
+    position:absolute;
+    z-index:4;
+    top:43%;
+    left:50%;
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(255,255,255,0.75);
+    border-radius:50%;
+    background:var(--dorado);
+    color:var(--blanco-espuma);
+    font-family:var(--serif);
+    font-size:1.2rem;
+    transform:translate(-50%,-50%);
+    transition:opacity 0.25s ease, transform 0.25s ease;
+  }
+  .sobre-instruccion{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:-52px;
+    color:var(--azul-profundo);
+    font-family:var(--sans);
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+  }
+  .sobre-boton.abierto .sobre-solapa{ transform:rotateX(180deg); }
+  .sobre-boton.abierto .sobre-tarjeta{ transform:translateY(-28%); }
+  .sobre-boton.abierto .sobre-sello{ opacity:0; transform:translate(-50%,-50%) scale(0.7); }
+  @media (prefers-reduced-motion: reduce){
+    .portada-sobre,
+    .sobre-solapa,
+    .sobre-tarjeta,
+    .sobre-sello{ transition:none; }
+  }
 
   .invitacion{
     position: relative;
@@ -408,6 +526,16 @@
 </head>
 <body>
 
+  <div class="portada-sobre" id="portada-sobre">
+    <button class="sobre-boton" id="sobre-boton" type="button" aria-label="Abrir invitación">
+      <span class="sobre-cuerpo"></span>
+      <span class="sobre-tarjeta">Baby Shower<br>Lucca Elian</span>
+      <span class="sobre-solapa"></span>
+      <span class="sobre-sello" aria-hidden="true">L</span>
+      <span class="sobre-instruccion">Toca para abrir</span>
+    </button>
+  </div>
+
   <div class="invitacion">
 
     <!-- ===== SECCIÓN 1: Título ===== -->
@@ -558,6 +686,24 @@
 
 <script>
   (function(){
+    var portadaSobre = document.getElementById('portada-sobre');
+    var sobreBoton = document.getElementById('sobre-boton');
+    var sobreAbierto = false;
+
+    document.body.classList.add('sobre-visible');
+
+    function abrirSobre(){
+      if (sobreAbierto) return;
+      sobreAbierto = true;
+      sobreBoton.classList.add('abierto');
+      window.setTimeout(function(){
+        portadaSobre.classList.add('oculta');
+        document.body.classList.remove('sobre-visible');
+      }, 1700);
+    }
+
+    sobreBoton.addEventListener('click', abrirSobre);
+
     var paneles = document.querySelectorAll('.panel-inner');
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
