@@ -107,9 +107,9 @@
     align-items:center;
     justify-content:center;
     text-align:center;
-    border: 1.5px dashed rgba(201,162,75,0.55);
+    border: none;
     border-radius: 50%;
-    background: rgba(255,255,255,0.4);
+    background: transparent;
     color: rgba(46,82,102,0.55);
     font-family: var(--sans);
     font-size: 0.55rem;
@@ -118,14 +118,22 @@
     padding: 6px;
   }
   .marino span{ display:block; opacity:0.75; }
+  .marino img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:contain;
+    border-radius:50%;
+  }
 
-  .marino--pulpo{      width: 92px;  height: 92px;  top: 24px;   left: -18px; }
-  .marino--estrella{   width: 56px;  height: 56px;  top: 90px;   right: 8px; }
-  .marino--caballito{  width: 76px;  height: 76px;  top: 50%;    right: -18px; transform: translateY(-50%); }
-  .marino--tortuga{    width: 96px;  height: 96px;  bottom: 20px; right: -20px; }
-  .marino--coral-a{    width: 66px;  height: 66px;  bottom: 26px; left: -6px; }
-  .marino--coral-b{    width: 54px;  height: 54px;  top: 30px;   right: 30px; }
-  .marino--estrella-b{ width: 48px;  height: 48px;  bottom: 40px; left: 20px; }
+  .marino--pulpo{      width: 120px; height: 120px; top: 18px;   left: -24px; }
+  .marino--estrella{   width: 76px;  height: 76px;  top: 82px;   right: 2px; }
+  .marino--caballito{  width: 140px; height: 140px; top: 50%;    right: -34px; transform: translateY(-50%); }
+  .marino--tortuga{    width: 124px; height: 124px; bottom: 14px; right: -28px; }
+  .marino--coral-a{    width: 86px;  height: 86px;  bottom: 20px; left: -10px; }
+  .marino--coral-b{    width: 72px;  height: 72px;  top: 22px;   right: 22px; }
+  .marino--estrella-b{ width: 64px;  height: 64px;  bottom: 32px; left: 14px; }
+  .marino--caracol{    width: 92px;  height: 92px;  bottom: 18px; left: 10px; }
 
   /* ---------- Divisor con motivo de concha ---------- */
   .divisor{
@@ -335,8 +343,8 @@
 
     <!-- ===== SECCIÓN 1: Título ===== -->
     <section class="panel">
-      <div class="marino marino--pulpo" data-animal="pulpo"><span>Pulpo<br>(imagen)</span></div>
-      <div class="marino marino--estrella" data-animal="estrella-de-mar"><span>Estrella<br>de mar</span></div>
+      <div class="marino marino--pulpo" data-animal="pulpo"><img src="pulpo.png" alt="Pulpo decorativo"></div>
+      <div class="marino marino--estrella" data-animal="estrella-de-mar"><img src="estrella-de-mar.png" alt="Estrella de mar decorativa"></div>
 
       <div class="panel-inner">
         <p class="eyebrow">Nos reunimos a celebrar</p>
@@ -357,8 +365,7 @@
 
     <!-- ===== SECCIÓN 2: Mensaje ===== -->
     <section class="panel">
-      <div class="marino marino--caballito" data-animal="caballito-de-mar"><span>Caballito<br>de mar</span></div>
-      <div class="marino marino--coral-b" data-animal="coral"><span>Coral</span></div>
+      <div class="marino marino--coral-b" data-animal="coral"><img src="coral.png" alt="Coral decorativo"></div>
 
       <div class="panel-inner">
         <p class="mensaje">Los tiempos de dios son perfectos y nos bendijo con este milagro. acompáñanos a celebrar la llegada de nuestro amado hijo.</p>
@@ -373,7 +380,7 @@
 
     <!-- ===== SECCIÓN 3: Nombre ===== -->
     <section class="panel">
-      <div class="marino--estrella-b marino" data-animal="estrella-de-mar"><span>Estrella<br>de mar</span></div>
+      <div class="marino--estrella-b marino" data-animal="estrella-de-mar"><img src="estrella.png" alt="Estrella de mar decorativa"></div>
 
       <div class="panel-inner">
         <p class="previo">celebrando a</p>
@@ -391,7 +398,7 @@
 
     <!-- ===== SECCIÓN 4: Fecha y cuenta regresiva ===== -->
     <section class="panel">
-      <div class="marino marino--tortuga" data-animal="tortuga"><span>Tortuga<br>(imagen)</span></div>
+      <div class="marino marino--tortuga" data-animal="tortuga"><img src="mantarralla.png" alt="Tortuga marina decorativa"></div>
 
       <div class="panel-inner">
         <h2 class="encabezado-ubicacion">Cuenta regresiva</h2>
@@ -415,7 +422,7 @@
 
     <!-- ===== SECCIÓN 5: Ubicación y mapa ===== -->
     <section class="panel">
-      <div class="marino marino--coral-a" data-animal="coral"><span>Coral</span></div>
+      <div class="marino marino--coral-a" data-animal="coral"><img src="coral.png" alt="Coral decorativo"></div>
 
       <div class="panel-inner">
         <h2 class="encabezado-ubicacion">Ubicación</h2>
@@ -450,6 +457,8 @@
 
     <!-- ===== SECCIÓN 6: Despedida ===== -->
     <section class="panel" style="min-height:60vh;">
+      <div class="marino marino--caracol" data-animal="caracol"><img src="caracol.png" alt="Caracol decorativo"></div>
+
       <div class="panel-inner">
         <p class="despedida">Te esperamos.</p>
       </div>
