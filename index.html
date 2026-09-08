@@ -155,11 +155,15 @@
   .divisor svg{ width:16px; height:16px; fill: var(--dorado); }
 
   .ola-animada{
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    bottom: 0;
     width: calc(100% + 64px);
     height: 42px;
-    margin: 22px auto 0;
+    margin: 0;
     overflow: hidden;
-    margin-left: -32px;
+    transform: translateX(-32px);
   }
   .ola-animada svg{
     width: 200%;
@@ -379,11 +383,11 @@
           <svg viewBox="0 0 24 24"><path d="M12 2c-1 4-4 5-4 9a4 4 0 0 0 8 0c0-4-3-5-4-9z"/></svg>
           <span class="linea der"></span>
         </div>
-        <div class="ola-animada" aria-hidden="true">
-          <svg viewBox="0 0 360 42" preserveAspectRatio="none">
-            <path d="M0 22 C30 4 60 4 90 22 S150 40 180 22 S240 4 270 22 S330 40 360 22 V42 H0 Z"/>
-          </svg>
-        </div>
+      </div>
+      <div class="ola-animada" aria-hidden="true">
+        <svg viewBox="0 0 360 42" preserveAspectRatio="none">
+          <path d="M0 22 C30 4 60 4 90 22 S150 40 180 22 S240 4 270 22 S330 40 360 22 V42 H0 Z"/>
+        </svg>
       </div>
     </section>
 
