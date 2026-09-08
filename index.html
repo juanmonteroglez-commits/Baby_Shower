@@ -535,6 +535,7 @@
       <span class="sobre-instruccion">Toca para abrir</span>
     </button>
   </div>
+  <audio id="musica-invitacion" src="Yo-soy-tu-amigo-fiel.mp3" preload="auto"></audio>
 
   <div class="invitacion">
 
@@ -688,6 +689,7 @@
   (function(){
     var portadaSobre = document.getElementById('portada-sobre');
     var sobreBoton = document.getElementById('sobre-boton');
+    var musicaInvitacion = document.getElementById('musica-invitacion');
     var sobreAbierto = false;
 
     document.body.classList.add('sobre-visible');
@@ -696,6 +698,7 @@
       if (sobreAbierto) return;
       sobreAbierto = true;
       sobreBoton.classList.add('abierto');
+      musicaInvitacion.play().catch(function(){});
       window.setTimeout(function(){
         portadaSobre.classList.add('oculta');
         document.body.classList.remove('sobre-visible');
