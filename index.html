@@ -188,6 +188,31 @@
     animation: mover-ola-invertida 7s linear infinite reverse;
   }
   .ola-invertida path{ fill: var(--azul-suave); opacity: 0.65; }
+  .burbujas{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .burbuja{
+    position:absolute;
+    bottom:-18px;
+    left:var(--x);
+    width:var(--tamano);
+    height:var(--tamano);
+    border:1.5px solid rgba(255,255,255,0.9);
+    background:rgba(255,255,255,0.18);
+    border-radius:50%;
+    opacity:0.7;
+    animation: subir-burbuja var(--duracion) linear var(--retraso) infinite;
+  }
+  @keyframes subir-burbuja{
+    0%{ opacity:0; transform:translate3d(0, 0, 0) scale(0.7); }
+    12%{ opacity:0.75; }
+    85%{ opacity:0.45; }
+    100%{ opacity:0; transform:translate3d(var(--desvio), -105vh, 0) scale(1); }
+  }
   @keyframes mover-ola-invertida{
     from{ transform: translateX(0); }
     to{ transform: translateX(-50%); }
@@ -199,6 +224,7 @@
   @media (prefers-reduced-motion: reduce){
     .ola-animada svg,
     .ola-invertida svg{ animation: none; }
+    .burbuja{ animation: none; opacity: 0.25; }
   }
 
   /* ---------- Tipografía ---------- */
@@ -386,6 +412,14 @@
 
     <!-- ===== SECCIÓN 1: Título ===== -->
     <section class="panel">
+      <div class="burbujas" aria-hidden="true">
+        <span class="burbuja" style="--x:12%; --tamano:10px; --duracion:9s; --retraso:-2s; --desvio:18px;"></span>
+        <span class="burbuja" style="--x:28%; --tamano:6px; --duracion:11s; --retraso:-6s; --desvio:-14px;"></span>
+        <span class="burbuja" style="--x:46%; --tamano:12px; --duracion:10s; --retraso:-4s; --desvio:22px;"></span>
+        <span class="burbuja" style="--x:63%; --tamano:7px; --duracion:12s; --retraso:-8s; --desvio:-18px;"></span>
+        <span class="burbuja" style="--x:78%; --tamano:9px; --duracion:10s; --retraso:-1s; --desvio:12px;"></span>
+        <span class="burbuja" style="--x:91%; --tamano:5px; --duracion:13s; --retraso:-5s; --desvio:-10px;"></span>
+      </div>
       <div class="ola-invertida" aria-hidden="true">
         <svg viewBox="0 0 360 42" preserveAspectRatio="none">
           <path d="M0 0 H360 V20 C330 38 300 38 270 20 S210 2 180 20 S120 38 90 20 S30 2 0 20 Z"/>
