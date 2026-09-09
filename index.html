@@ -549,6 +549,87 @@
     color: var(--azul-profundo);
   }
 
+  .mensajes-bebe{
+    width:100%;
+    max-width:360px;
+    margin:24px auto 0;
+    text-align:left;
+  }
+  .mensajes-bebe label{
+    display:block;
+    margin:0 0 6px;
+    color:var(--azul-profundo);
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  .mensajes-bebe input,
+  .mensajes-bebe textarea{
+    width:100%;
+    border:1px solid rgba(46,82,102,0.28);
+    border-radius:3px;
+    padding:11px 12px;
+    background:rgba(255,255,255,0.65);
+    color:var(--tinta);
+    font:inherit;
+    outline:none;
+  }
+  .mensajes-bebe input:focus,
+  .mensajes-bebe textarea:focus{
+    border-color:var(--aguamarina);
+    box-shadow:0 0 0 3px rgba(127,184,173,0.18);
+  }
+  .mensajes-bebe textarea{
+    min-height:92px;
+    resize:vertical;
+  }
+  .campo-mensaje{ margin-top:14px; }
+  .boton-mensaje{
+    display:block;
+    width:100%;
+    margin-top:16px;
+    padding:12px 18px;
+    border:0;
+    border-radius:999px;
+    background:var(--azul-profundo);
+    color:var(--blanco-espuma);
+    cursor:pointer;
+    font:500 0.78rem var(--sans);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+  }
+  .boton-mensaje:hover{ background:var(--aguamarina); }
+  .estado-mensaje{
+    min-height:1.4em;
+    margin-top:10px;
+    color:var(--aguamarina);
+    font-size:0.78rem;
+    text-align:center;
+  }
+  .lista-mensajes{
+    display:grid;
+    gap:10px;
+    margin-top:22px;
+  }
+  .mensaje-bebe{
+    padding:12px 14px;
+    border-left:3px solid var(--dorado);
+    background:rgba(255,255,255,0.42);
+  }
+  .mensaje-bebe strong{
+    display:block;
+    color:var(--azul-profundo);
+    font-family:var(--serif);
+    font-size:1.15rem;
+  }
+  .mensaje-bebe p{
+    margin-top:3px;
+    color:var(--tinta);
+    font-family:var(--serif-mensaje);
+    font-size:0.92rem;
+    line-height:1.4;
+  }
+
   @media (min-width: 480px){
     h1.titulo{ font-size: 3.2rem; }
     .nombre{ font-size: 4rem; }
@@ -748,7 +829,47 @@
       </svg>
     </div>
 
-    <!-- ===== SECCIÓN 6: Despedida ===== -->
+    <!-- ===== SECCIÓN 6: Mensajes para el bebé ===== -->
+    <section class="panel">
+      <div class="ola-invertida" aria-hidden="true">
+        <svg viewBox="0 0 360 42" preserveAspectRatio="none">
+          <path d="M0 0 H360 V20 C330 38 300 38 270 20 S210 2 180 20 S120 38 90 20 S30 2 0 20 Z"/>
+        </svg>
+      </div>
+      <div class="marino marino--concha" data-animal="concha"><img src="concha.png" alt="Concha decorativa"></div>
+
+      <div class="panel-inner">
+        <h2 class="encabezado-ubicacion">Mensajes para el bebé</h2>
+        <p class="mensaje">Déjale unas palabras llenas de cariño para que las guarde siempre.</p>
+
+        <form class="mensajes-bebe" id="formulario-mensaje">
+          <label for="nombre-mensaje">Tu nombre</label>
+          <input id="nombre-mensaje" name="nombre" type="text" maxlength="40" required>
+
+          <div class="campo-mensaje">
+            <label for="texto-mensaje">Tu mensaje</label>
+            <textarea id="texto-mensaje" name="mensaje" maxlength="240" required></textarea>
+          </div>
+
+          <button class="boton-mensaje" type="submit">Dejar mensaje</button>
+          <p class="estado-mensaje" id="estado-mensaje" role="status" aria-live="polite"></p>
+          <div class="lista-mensajes" id="lista-mensajes" aria-live="polite"></div>
+        </form>
+      </div>
+      <div class="ola-animada" aria-hidden="true">
+        <svg viewBox="0 0 360 42" preserveAspectRatio="none">
+          <path d="M0 22 C30 4 60 4 90 22 S150 40 180 22 S240 4 270 22 S330 40 360 22 V42 H0 Z"/>
+        </svg>
+      </div>
+    </section>
+
+    <div class="ola">
+      <svg viewBox="0 0 420 44" preserveAspectRatio="none">
+        <path d="M0,18 C60,42 120,0 180,16 C240,34 300,2 360,18 C390,26 405,24 420,18 L420,0 L0,0 Z" fill="#a9cbd6" opacity="0.5"/>
+      </svg>
+    </div>
+
+    <!-- ===== SECCIÓN 7: Despedida ===== -->
     <section class="panel" style="min-height:60vh;">
       <div class="ola-invertida" aria-hidden="true">
         <svg viewBox="0 0 360 42" preserveAspectRatio="none">
@@ -775,6 +896,41 @@
     var sobreBoton = document.getElementById('sobre-boton');
     var musicaInvitacion = document.getElementById('musica-invitacion');
     var sobreAbierto = false;
+
+    var formularioMensaje = document.getElementById('formulario-mensaje');
+    var listaMensajes = document.getElementById('lista-mensajes');
+    var estadoMensaje = document.getElementById('estado-mensaje');
+    var mensajesGuardados = JSON.parse(localStorage.getItem('mensajes-bebe-lucca') || '[]');
+
+    function mostrarMensajes(){
+      listaMensajes.textContent = '';
+      mensajesGuardados.forEach(function(mensaje){
+        var tarjeta = document.createElement('article');
+        tarjeta.className = 'mensaje-bebe';
+        var nombre = document.createElement('strong');
+        var texto = document.createElement('p');
+        nombre.textContent = mensaje.nombre;
+        texto.textContent = mensaje.texto;
+        tarjeta.appendChild(nombre);
+        tarjeta.appendChild(texto);
+        listaMensajes.appendChild(tarjeta);
+      });
+    }
+
+    formularioMensaje.addEventListener('submit', function(evento){
+      evento.preventDefault();
+      var datos = new FormData(formularioMensaje);
+      mensajesGuardados.push({
+        nombre: datos.get('nombre').trim(),
+        texto: datos.get('mensaje').trim()
+      });
+      localStorage.setItem('mensajes-bebe-lucca', JSON.stringify(mensajesGuardados));
+      formularioMensaje.reset();
+      mostrarMensajes();
+      estadoMensaje.textContent = 'Tu mensaje quedó guardado con mucho cariño.';
+    });
+
+    mostrarMensajes();
 
     document.body.classList.add('sobre-visible');
 
@@ -842,6 +998,10 @@
     paneles.forEach(function(p){ observador.observe(p); });
   })();
 </script>
+
+<!-- Es crucial el type="module" -->
+<script type="module" src="app.js"></script>
+</body>
 
 </body>
 </html>
