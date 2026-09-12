@@ -19,15 +19,15 @@ const db = getFirestore(app);
 
 // Conectamos nuestro JavaScript con el HTML
 const formulario = document.getElementById('formulario-mensaje');
-const contenedorMensajes = document.getElementById('contenedor-mensajes');
+const contenedorMensajes = document.getElementById('lista-mensajes');
 const coleccionMensajes = collection(db, "mensajes");
 
 // Lógica para GUARDAR un mensaje nuevo cuando le dan a "Enviar"
 formulario.addEventListener('submit', async (e) => {
   e.preventDefault(); // Evita que la página recargue al enviar
   
-  const nombre = document.getElementById('input-nombre').value;
-  const texto = document.getElementById('input-texto').value;
+  const nombre = document.getElementById('nombre-mensaje').value.trim();
+  const texto = document.getElementById('texto-mensaje').value.trim();
   
   try {
     await addDoc(coleccionMensajes, {
@@ -58,14 +58,21 @@ onSnapshot(consulta, (snapshot) => {
       fechaFormateada = fechaObjeto.toLocaleDateString() + ' ' + fechaObjeto.toLocaleTimeString(); 
     }
 
-    // Construye el diseño visual de cada mensaje individual
-    const mensajeHTML = `
-      <div style="border: 1px solid #e2e8f0; padding: 15px; margin-bottom: 12px; border-radius: 8px; background-color: rgba(255, 255, 255, 0.7); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-        <p style="margin: 0; font-size: 1.1em; color: #4a5568;"><strong>${mensaje.nombre}</strong> <span style="font-size: 0.8em; color: #a0aec0; margin-left: 8px;">${fechaFormateada}</span></p>
-        <p style="margin: 8px 0 0 0; color: #2d3748; line-height: 1.5;">${mensaje.texto}</p>
-      </div>
-    `;
-    
-    contenedorMensajes.innerHTML += mensajeHTML;
+    const tarjeta = document.createElement('article');
+    tarjeta.className = 'mensaje-bebe';
+
+    const nombre = document.createElement('strong');
+    nombre.textContent = mensaje.nombre;
+
+    const texto = document.createElement('p');
+    texto.textContent = mensaje.texto;
+
+    const fecha = document.createElement('small');
+    fecha.textContent = fechaFormateada;
+
+    tarjeta.appendChild(nombre);
+    tarjeta.appendChild(fecha);
+    tarjeta.appendChild(texto);
+    contenedorMensajes.appendChild(tarjeta);
   });
 });
