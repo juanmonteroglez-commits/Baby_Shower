@@ -964,41 +964,6 @@
     var musicaInvitacion = document.getElementById('musica-invitacion');
     var sobreAbierto = false;
 
-    var formularioMensaje = document.getElementById('formulario-mensaje');
-    var listaMensajes = document.getElementById('lista-mensajes');
-    var estadoMensaje = document.getElementById('estado-mensaje');
-    var mensajesGuardados = JSON.parse(localStorage.getItem('mensajes-bebe-lucca') || '[]');
-
-    function mostrarMensajes(){
-      listaMensajes.textContent = '';
-      mensajesGuardados.forEach(function(mensaje){
-        var tarjeta = document.createElement('article');
-        tarjeta.className = 'mensaje-bebe';
-        var nombre = document.createElement('strong');
-        var texto = document.createElement('p');
-        nombre.textContent = mensaje.nombre;
-        texto.textContent = mensaje.texto;
-        tarjeta.appendChild(nombre);
-        tarjeta.appendChild(texto);
-        listaMensajes.appendChild(tarjeta);
-      });
-    }
-
-    formularioMensaje.addEventListener('submit', function(evento){
-      evento.preventDefault();
-      var datos = new FormData(formularioMensaje);
-      mensajesGuardados.push({
-        nombre: datos.get('nombre').trim(),
-        texto: datos.get('mensaje').trim()
-      });
-      localStorage.setItem('mensajes-bebe-lucca', JSON.stringify(mensajesGuardados));
-      formularioMensaje.reset();
-      mostrarMensajes();
-      estadoMensaje.textContent = 'Tu mensaje quedó guardado con mucho cariño.';
-    });
-
-    mostrarMensajes();
-
     document.body.classList.add('sobre-visible');
 
     function abrirSobre(){

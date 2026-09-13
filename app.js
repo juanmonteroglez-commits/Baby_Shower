@@ -20,6 +20,7 @@ const db = getFirestore(app);
 // Conectamos nuestro JavaScript con el HTML
 const formulario = document.getElementById('formulario-mensaje');
 const contenedorMensajes = document.getElementById('lista-mensajes');
+const estadoMensaje = document.getElementById('estado-mensaje');
 const coleccionMensajes = collection(db, "mensajes");
 
 // Lógica para GUARDAR un mensaje nuevo cuando le dan a "Enviar"
@@ -36,9 +37,10 @@ formulario.addEventListener('submit', async (e) => {
       fecha: serverTimestamp() // Le pone la hora de los servidores de Google
     });
     formulario.reset(); // Limpia las cajas de texto tras enviar
+    estadoMensaje.textContent = 'Tu mensaje quedó guardado con mucho cariño.';
   } catch (error) {
     console.error("Error al guardar:", error);
-    alert("Hubo un error al enviar el mensaje.");
+    estadoMensaje.textContent = 'No se pudo guardar el mensaje. Revisa la conexión con Firebase.';
   }
 });
 
@@ -62,17 +64,20 @@ onSnapshot(consulta, (snapshot) => {
     tarjeta.className = 'mensaje-bebe';
 
     const nombre = document.createElement('strong');
-    nombre.textContent = mensaje.nombre;
+    nombre.textContent = mensaje.nombre || 'Invitado';
 
     const texto = document.createElement('p');
-    texto.textContent = mensaje.texto;
+    texto.textContent = mensaje.texto || mensaje.mensaje || mensaje.message || '';
 
     const fecha = document.createElement('small');
     fecha.textContent = fechaFormateada;
 
     tarjeta.appendChild(nombre);
-    tarjeta.appendChild(fecha);
     tarjeta.appendChild(texto);
+    tarjeta.appendChild(fecha);
     contenedorMensajes.appendChild(tarjeta);
   });
+}, (error) => {
+  console.error("Error al cargar mensajes:", error);
+  estadoMensaje.textContent = 'No se pudieron cargar los mensajes.';
 });
