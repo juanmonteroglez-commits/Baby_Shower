@@ -541,12 +541,20 @@
     box-shadow: 0 16px 28px -10px rgba(201,162,75,0.7);
   }
   .boton-ubicacion svg{ width:15px; height:15px; fill: var(--blanco-espuma); flex-shrink:0; }
-  .boton-instagram{
-    margin-top: 24px;
-    background: linear-gradient(135deg, var(--azul-profundo), var(--aguamarina));
-    box-shadow: 0 12px 24px -10px rgba(46,82,102,0.6);
+  .enlace-instagram{
+    display:flex;
+    width:max-content;
+    align-items:center;
+    gap:7px;
+    margin:0 auto 24px;
+    color:var(--azul-profundo);
+    font-family:var(--sans);
+    font-size:0.82rem;
+    letter-spacing:0.08em;
+    text-decoration:none;
   }
-  .boton-instagram:hover{ box-shadow: 0 16px 28px -10px rgba(46,82,102,0.7); }
+  .enlace-instagram:hover{ color:var(--aguamarina); text-decoration:underline; }
+  .enlace-instagram svg{ width:17px; height:17px; fill:currentColor; flex-shrink:0; }
 
   .despedida{
     font-family: var(--serif);
@@ -914,10 +922,6 @@
 
       <div class="panel-inner">
         <p class="despedida">Te esperamos.</p>
-        <a class="boton-ubicacion boton-instagram" href="https://www.instagram.com/invitacioneslabmx/" target="_blank" rel="noopener noreferrer" aria-label="Visita nuestro Instagram @invitacioneslabmx">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 12 16a4.5 4.5 0 0 1 0-9zm0 2A2.5 2.5 0 1 0 12 14a2.5 2.5 0 0 0 0-5.5zM17.5 6a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>
-          @invitacioneslabmx
-        </a>
       </div>
       <div class="ola-animada" aria-hidden="true">
         <svg viewBox="0 0 360 42" preserveAspectRatio="none">
@@ -925,6 +929,11 @@
         </svg>
       </div>
     </section>
+
+    <a class="enlace-instagram" href="https://www.instagram.com/invitacioneslabmx/" target="_blank" rel="noopener noreferrer" aria-label="Visita nuestro Instagram @invitacioneslabmx">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 12 16a4.5 4.5 0 0 1 0-9zm0 2A2.5 2.5 0 1 0 12 14a2.5 2.5 0 0 0 0-5.5zM17.5 6a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
+      @invitacioneslabmx
+    </a>
 
   </div>
 
