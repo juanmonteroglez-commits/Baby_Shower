@@ -47,30 +47,51 @@ formulario.addEventListener('submit', async (e) => {
 // Lógica para MOSTRAR los mensajes y actualizar en tiempo real
 const consulta = query(coleccionMensajes, orderBy("fecha", "desc"));
 
+function obtenerFechaValida(valorFecha) {
+  if (!valorFecha) return null;
+
+  if (typeof valorFecha.toDate === 'function') {
+    const fecha = valorFecha.toDate();
+    return Number.isNaN(fecha.getTime()) ? null : fecha;
+  }
+
+  const fecha = new Date(valorFecha);
+  return Number.isNaN(fecha.getTime()) ? null : fecha;
+}
+
+function formatearFecha(valorFecha) {
+  const fecha = obtenerFechaValida(valorFecha);
+  if (!fecha) return 'Justo ahora';
+
+  return `${fecha.toLocaleDateString('es-MX')} ${fecha.toLocaleTimeString('es-MX', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  })}`;
+}
+
 onSnapshot(consulta, (snapshot) => {
   contenedorMensajes.innerHTML = ''; // Limpia los mensajes viejos antes de mostrar los nuevos
-  
+
   snapshot.forEach((doc) => {
-    const mensaje = doc.data();
-    let fechaFormateada = "Justo ahora";
-    
-    if (mensaje.fecha) {
-      const fechaObjeto = mensaje.fecha.toDate();
-      // Da formato a la fecha: ej. "8/9/2026 15:30:00"
-      fechaFormateada = fechaObjeto.toLocaleDateString() + ' ' + fechaObjeto.toLocaleTimeString(); 
-    }
+    const mensaje = doc.data() || {};
+    const nombreMensaje = (mensaje.nombre || 'Invitado').toString().trim();
+    const textoMensaje = (mensaje.texto ?? mensaje.mensaje ?? mensaje.message ?? '').toString().trim();
+
+    if (!textoMensaje) return;
 
     const tarjeta = document.createElement('article');
     tarjeta.className = 'mensaje-bebe';
 
     const nombre = document.createElement('strong');
-    nombre.textContent = mensaje.nombre || 'Invitado';
+    nombre.textContent = nombreMensaje;
 
     const texto = document.createElement('p');
-    texto.textContent = mensaje.texto || mensaje.mensaje || mensaje.message || '';
+    texto.textContent = textoMensaje;
 
     const fecha = document.createElement('small');
-    fecha.textContent = fechaFormateada;
+    fecha.textContent = formatearFecha(mensaje.fecha);
 
     tarjeta.appendChild(nombre);
     tarjeta.appendChild(texto);
