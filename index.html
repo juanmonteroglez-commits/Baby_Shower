@@ -953,18 +953,25 @@
     var musicaInvitacion = document.getElementById('musica-invitacion');
     var sobreAbierto = false;
 
-    document.body.classList.add('sobre-visible');
+    document.body.classList.remove('sobre-visible');
 
     function abrirSobre(){
       if (sobreAbierto) return;
       sobreAbierto = true;
       sobreBoton.classList.add('abierto');
+      document.body.classList.remove('sobre-visible');
       musicaInvitacion.play().catch(function(){});
       window.setTimeout(function(){
         portadaSobre.classList.add('oculta');
         document.body.classList.remove('sobre-visible');
       }, 1700);
     }
+
+    window.setTimeout(function(){
+      if (!sobreAbierto) {
+        abrirSobre();
+      }
+    }, 1200);
 
     sobreBoton.addEventListener('click', abrirSobre);
 
