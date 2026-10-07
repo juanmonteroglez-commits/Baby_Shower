@@ -23,26 +23,37 @@ const contenedorMensajes = document.getElementById('lista-mensajes');
 const estadoMensaje = document.getElementById('estado-mensaje');
 const coleccionMensajes = collection(db, "mensajes");
 
-// Lógica para GUARDAR un mensaje nuevo cuando le dan a "Enviar"
-formulario.addEventListener('submit', async (e) => {
-  e.preventDefault(); // Evita que la página recargue al enviar
-  
-  const nombre = document.getElementById('nombre-mensaje').value.trim();
-  const texto = document.getElementById('texto-mensaje').value.trim();
-  
-  try {
-    await addDoc(coleccionMensajes, {
-      nombre: nombre,
-      texto: texto,
-      fecha: serverTimestamp() // Le pone la hora de los servidores de Google
-    });
-    formulario.reset(); // Limpia las cajas de texto tras enviar
-    estadoMensaje.textContent = 'Tu mensaje quedó guardado con mucho cariño.';
-  } catch (error) {
-    console.error("Error al guardar:", error);
-    estadoMensaje.textContent = 'No se pudo guardar el mensaje. Revisa la conexión con Firebase.';
-  }
-});
+if (!formulario || !contenedorMensajes || !estadoMensaje) {
+  console.error('Faltan elementos del formulario de mensajes en el DOM.');
+} else {
+  // Lógica para GUARDAR un mensaje nuevo cuando le dan a "Enviar"
+  formulario.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Evita que la página recargue al enviar
+
+    const nombreInput = document.getElementById('nombre-mensaje');
+    const textoInput = document.getElementById('texto-mensaje');
+    const nombre = nombreInput ? nombreInput.value.trim() : '';
+    const texto = textoInput ? textoInput.value.trim() : '';
+
+    if (!nombre || !texto) {
+      estadoMensaje.textContent = 'Escribe tu nombre y mensaje antes de enviar.';
+      return;
+    }
+
+    try {
+      await addDoc(coleccionMensajes, {
+        nombre: nombre,
+        texto: texto,
+        fecha: serverTimestamp() // Le pone la hora de los servidores de Google
+      });
+      formulario.reset(); // Limpia las cajas de texto tras enviar
+      estadoMensaje.textContent = 'Tu mensaje quedó guardado con mucho cariño.';
+    } catch (error) {
+      console.error("Error al guardar:", error);
+      estadoMensaje.textContent = 'No se pudo guardar el mensaje. Revisa la conexión con Firebase o las reglas de Firestore.';
+    }
+  });
+}
 
 // Lógica para MOSTRAR los mensajes y actualizar en tiempo real
 const consulta = query(coleccionMensajes, orderBy("fecha", "desc"));
@@ -74,6 +85,14 @@ function formatearFecha(valorFecha) {
 onSnapshot(consulta, (snapshot) => {
   contenedorMensajes.innerHTML = ''; // Limpia los mensajes viejos antes de mostrar los nuevos
 
+  if (snapshot.empty) {
+    const vacio = document.createElement('p');
+    vacio.className = 'estado-mensaje';
+    vacio.textContent = 'Aún no hay mensajes para este bebé. ¡Sé el primero!';
+    contenedorMensajes.appendChild(vacio);
+    return;
+  }
+
   snapshot.forEach((doc) => {
     const mensaje = doc.data() || {};
     const nombreMensaje = (mensaje.nombre || 'Invitado').toString().trim();
@@ -99,6 +118,8 @@ onSnapshot(consulta, (snapshot) => {
     contenedorMensajes.appendChild(tarjeta);
   });
 }, (error) => {
-  console.error("Error al cargar mensajes:", error);
-  estadoMensaje.textContent = 'No se pudieron cargar los mensajes.';
+  console.error('Error al cargar mensajes:', error);
+  const codigo = error && error.code ? ` (${error.code})` : '';
+  estadoMensaje.textContent = `No se pudieron cargar los mensajes${codigo}. Revisa las reglas de Firestore o que la base esté activa.`;
+  contenedorMensajes.innerHTML = '<p class="estado-mensaje">No tienes permisos para leer mensajes o la base de datos no está habilitada.</p>';
 });
